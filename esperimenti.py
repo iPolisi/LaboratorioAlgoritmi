@@ -24,37 +24,43 @@ def genera_dati(dimensione, perc_duplicati):
     return dati
 
 def esegui_test_inserimento():
-   
+    """
+    Esegue il benchmark di inserimento per i tre alberi, misurando tempo e altezza.
+    """
     dimensioni = [1000, 5000, 10000]
-    percentuali = [0.0, 0.25, 0.50, 0.75, 0.90] 
+    percentuali = [0.0, 0.25, 0.50, 0.75, 0.90] # Da 0% a 90% di duplicati
     
-    print(f"{'Dimensione':<12} | {'% Duplicati':<12} | {'Normale (s)':<15} | {'Flag (s)':<15} | {'Lista (s)':<15}")
-    print("-" * 75)
+    # Intestazione della tabella allargata per includere le altezze (H)
+    print(f"{'Dim.':<8} | {'% Dup.':<7} | {'T. Norm (s)':<12} | {'T. Flag (s)':<12} | {'T. Lista (s)':<12} | {'H. Norm':<8} | {'H. Flag':<8} | {'H. Lista':<8}")
+    print("-" * 95)
     
     for dim in dimensioni:
         for perc in percentuali:
-            
             dati_test = genera_dati(dim, perc)
             
-            
+            # Test ABR Normale
             abr_normale = ABRNormale()
             inizio = time.perf_counter()
             for chiave in dati_test:
                 abr_normale.insert(chiave)
             tempo_normale = time.perf_counter() - inizio
+            alt_normale = abr_normale.get_altezza()
             
-            
+            # Test ABR Flag
             abr_flag = ABRFlag()
             inizio = time.perf_counter()
             for chiave in dati_test:
                 abr_flag.insert(chiave)
             tempo_flag = time.perf_counter() - inizio
+            alt_flag = abr_flag.get_altezza()
             
-            
+            # Test ABR Lista
             abr_lista = ABRLista()
             inizio = time.perf_counter()
             for chiave in dati_test:
                 abr_lista.insert(chiave)
             tempo_lista = time.perf_counter() - inizio
+            alt_lista = abr_lista.get_altezza()
             
-            print(f"{dim:<12} | {perc*100:<11.0f}% | {tempo_normale:<15.6f} | {tempo_flag:<15.6f} | {tempo_lista:<15.6f}")
+            # Stampa dei risultati formattati
+            print(f"{dim:<8} | {perc*100:<6.0f}% | {tempo_normale:<12.6f} | {tempo_flag:<12.6f} | {tempo_lista:<12.6f} | {alt_normale:<8} | {alt_flag:<8} | {alt_lista:<8}")

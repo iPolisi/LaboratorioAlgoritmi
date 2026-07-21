@@ -29,3 +29,15 @@ class ABRFlag:
                 node.right = NodeFlag(key)
             else:
                 self._insert_recursive(node.right, key)
+                
+    def get_altezza(self):
+        return self._get_altezza_recursive(self.root)
+
+    def _get_altezza_recursive(self, node):
+        if node is None:
+            return 0
+        
+        altezza_sinistra = self._get_altezza_recursive(node.left)
+        altezza_destra = self._get_altezza_recursive(node.right)
+        
+        return 1 + max(altezza_sinistra, altezza_destra)            
